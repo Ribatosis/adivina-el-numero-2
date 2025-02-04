@@ -1,16 +1,16 @@
 
-let numeroSecreto = numeroAleatorio(1, 10);
-let contador = 1;
+let numeroSecreto = 0;
+let listaNumerosAleatorios = [];
 
 function nombresCosas(elemento, texto){
     let elementoHTML = document.querySelector(elemento);
     elementoHTML.innerHTML = (texto);
 }
 
-nombresCosas('h1', "Adivina el número secreto");
-nombresCosas('p', "ingresa un número entre el 1 y el 10")
+condicionesIniciales();
 
 function intentoUsuario(){
+
 
     let verificacionUser = parseInt(document.getElementById('inputValidacion').value);
    
@@ -29,7 +29,7 @@ function intentoUsuario(){
         limpiarCaja();
     }
 
-
+    return
 }
 
 function limpiarCaja(){
@@ -37,16 +37,40 @@ function limpiarCaja(){
 }
 
 function numeroAleatorio (min, max){
-    return Math.floor(Math.random() * (max - min + 1) + min);
+
+    let numeroGenerado = Math.floor(Math.random() *10) + 1;
+
+
+    if(listaNumerosAleatorios.length == 9){
+        nombresCosas('p', "Ya se sortearon todos los números")
+    }else{
+        if(listaNumerosAleatorios.includes(numeroGenerado)){
+            return numeroAleatorio();
+        }else{
+            listaNumerosAleatorios.push(numeroGenerado);
+            return numeroGenerado;
+        }
+    }
+
+    console.log(numeroGenerado)
+    console.log(listaNumerosAleatorios)
+
+    
+}
+
+function condicionesIniciales(){
+    nombresCosas('h1', "Adivina el número secreto");
+    nombresCosas('p', "ingresa un número entre el 1 y el 10")
+    numeroSecreto = numeroAleatorio();
+    contador = 0;
 }
 
 function reiniciarJuego(){
-    nombresCosas('p', "ingresa un número entre el 1 y el 10")
-    numeroSecreto = numeroAleatorio(1, 10);
-    contador = 1;
+    condicionesIniciales();
     limpiarCaja()
+    // listaNumerosAleatorios = []
 
     document.getElementById('reiniciar').setAttribute('disabled', 'true')
 
-    verificacionUser()
+    intentoUsuario()
 }
